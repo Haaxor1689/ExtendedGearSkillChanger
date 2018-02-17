@@ -1,6 +1,7 @@
 ExtendedGearSkillChanger = {}
 ExtendedGearSkillChanger.name = "ExtendedGearSkillChanger"
 
+-- Global variables
 local LAM2 = LibStub("LibAddonMenu-2.0")
 local panelData = {
     type = "panel",
@@ -95,6 +96,15 @@ local optionsData = {
         end
     }
 }
+
+-- Functions
+function ExtendedGearSkillChanger.OnAddOnLoaded(event, addonName)
+    if addonName ~= ExtendedGearSkillChanger.name then
+        return
+    end
+    ExtendedGearSkillChanger:Initialize()
+    EVENT_MANAGER:UnregisterForEvent(ExtendedGearSkillChanger.name, EVENT_ADD_ON_LOADED)
+end
 
 function ExtendedGearSkillChanger:Initialize()
     LAM2:RegisterAddonPanel("ExtendedGearSkillChangerOptions", panelData)
@@ -258,15 +268,4 @@ function ExtendedGearSkillChanger.SkillToGearIcon(index)
     end
 end
 
-function ExtendedGearSkillChanger.OnAddOnLoaded(event, addonName)
-    if addonName ~= ExtendedGearSkillChanger.name then
-        return
-    end
-    ExtendedGearSkillChanger:Initialize()
-end
-
-EVENT_MANAGER:RegisterForEvent(
-    ExtendedGearSkillChanger.name,
-    EVENT_ADD_ON_LOADED,
-    ExtendedGearSkillChanger.OnAddOnLoaded
-)
+EVENT_MANAGER:RegisterForEvent(ExtendedGearSkillChanger.name, EVENT_ADD_ON_LOADED, ExtendedGearSkillChanger.OnAddOnLoaded)
